@@ -1,0 +1,15 @@
+#PBS -m n
+#PBS -k oe
+#PBS -j oe
+#PBS -q forever
+#PBS -l walltime=60:00:00,nodes=1:ppn=8
+
+cd /data/anggao/CaCl-water/CaCl-water_smallbox/equil
+for((i=0; i<21; i++))
+do
+  cp start_$i.gro start.gro
+  ~/gromacs5/bin/gmx grompp -f equil.mdp -p water.top -c start.gro -o md.tpr -maxwarn 2
+  ~/gromacs5/bin/gmx mdrun -nt 8  -deffnm md  
+  cp md.gro equil_$i.gro
+  rm -rf md*
+done

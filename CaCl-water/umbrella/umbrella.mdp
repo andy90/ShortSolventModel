@@ -1,0 +1,109 @@
+; LJ run input file
+; (Note: uses real MD units and NOT reduced LJ units)
+
+; RUN CONTROL PARAMETERS
+integrator               = md
+; Start time and timestep in ps
+tinit                    = 0
+dt                       = 0.002
+nsteps                   = 20000000
+
+; mode for center of mass motion removal
+comm-mode                = Linear
+; number of steps for center of mass motion removal
+nstcomm                  = 100
+; group(s) for center of mass motion removal
+comm-grps                = 
+
+
+; OUTPUT CONTROL OPTIONS
+; Output frequency for coords (x), velocities (v) and forces (f)
+nstxout                  = 0
+nstvout                  = 0
+nstfout                  = 0
+; Checkpointing helps you continue after crashes
+nstcheckpoint            = 1000
+; Output frequency for energies to log file and energy file
+nstlog                   = 1000
+nstenergy                = 1000
+; Output frequency and precision for xtc file
+nstxtcout                = 10
+xtc-precision            = 1000
+compressed-x-grps       = Ar  Af
+; NEIGHBORSEARCHING PARAMETERS
+; nblist update frequency
+nstlist                  = 20
+; ns algorithm (simple or grid)
+ns-type                  = grid
+; Periodic boundary conditions: xyz (default), no (vacuum)
+; or full (infinite systems only)
+pbc                      = xyz
+; nblist cut-off        
+rlist                    = 1.00
+
+
+
+; OPTIONS FOR ELECTROSTATICS AND VDW
+; Method for doing electrostatics
+cutoff-scheme            = Verlet
+
+;coulombtype              = Cut-off
+coulombtype              = PME
+pme_order                = 4
+fourierspacing           = 0.16 
+rcoulomb                 = 1.00
+
+ewald-rtol               = 1e-5
+; Dielectric constant (DC) for cut-off or DC of reaction field
+epsilon-r                = 1
+; Method for doing Van der Waals
+vdw-type                 = Cut-off
+; cut-off lengths
+rvdw                     = 1.00
+; Apply long range dispersion corrections for Energy and Pressure
+DispCorr                 = EnerPres
+
+
+; OPTIONS FOR WEAK COUPLING ALGORITHMS
+; Temperature coupling  
+tcoupl                   = V-rescale
+; Groups to couple separately
+tc-grps                  = system
+; Time constant (ps) and reference temperature (K)
+tau-t                    = 0.1
+ref-t                    = 300
+
+; Pressure coupling     
+Pcoupl                   = Parrinello-Rahman
+;Pcoupl                   = Berendsen
+Pcoupltype               = Isotropic
+; Time constant (ps), compressibility (1/bar) and reference P (bar)
+tau-p                    = 20
+compressibility          = 4e-5
+ref-p                    = 1
+refcoord_scaling         = com
+
+
+; GENERATE VELOCITIES FOR STARTUP RUN
+;gen-vel                  = yes
+;gen-temp                 = 300 
+;;gen-temp                 = 120.0
+;gen-seed                 = 173529
+
+
+; Pull code
+pull                    = yes
+pull_ngroups            = 2
+pull_ncoords            = 1
+pull_group1_name        = Af
+pull_group2_name        = Ar
+pull_coord1_type        = umbrella
+pull_coord1_geometry    = distance
+pull_coord1_groups      = 1 2
+pull_coord1_dim         = N N Y
+pull_coord1_rate        = 0          ; 0.01 nm per ps = 10 nm per ns
+pull_coord1_k           = 8000        ; kJ mol^-1 nm^-2
+pull_coord1_start       = yes         ; define initial COM distance > 0
+pull_nstxout            = 10
+pull_nstfout            = 10
+
