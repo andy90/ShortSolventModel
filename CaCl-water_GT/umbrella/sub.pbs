@@ -1,0 +1,11 @@
+#PBS -m n
+#PBS -k oe
+#PBS -j oe
+#PBS -q forever
+#PBS -l walltime=600:00:00,nodes=1:ppn=4
+
+cd /data/anggao/CaCl-water/CaCl-water_smallbox_GT/umbrella/$num
+~/gromacs5/bin/gmx grompp -f umbrella.mdp -p water.top -c equil_${num}.gro -o md.tpr -maxwarn 2
+~/gromacs5/bin/gmx mdrun -nt 4  -deffnm md -pf pullf.xvg -px pullx.xvg -table table.xvg
+mv md.xtc umbrella_${num}.xtc
+mv md.gro final_${num}.gro
