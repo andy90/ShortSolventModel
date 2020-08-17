@@ -1,0 +1,1 @@
+in Na_Ca_Cl_potentials folder, the fit_charge.nb can fit the Gaussian truncated ion charge around the ion. It needs to read the intq_Ca_full and intq_Ca_0, the vCaCl.nb and vNaCl.nb stores how to calculate the Ca-Cl and Na-Cl SSM potential. 
